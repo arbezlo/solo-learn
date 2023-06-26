@@ -126,9 +126,15 @@ def parse_cfg(cfg: omegaconf.DictConfig):
     # extra processing
     if cfg.data.dataset in _N_CLASSES_PER_DATASET:
         cfg.data.num_classes = _N_CLASSES_PER_DATASET[cfg.data.dataset]
+    elif cfg.data.dataset == 'custom' and cfg.data.num_classes is not None:
+        #If the number of classes in the custom dataset is precised in the config file we use it
+        cfg.data.num_classes = max(
+            1,
+            cfg.data.num_classes
+        )
     else:
         # hack to maintain the current pipeline
-        # even if the custom dataset doesn't have any labels
+        # even if the custom dataset doesn't have any labels 
         cfg.data.num_classes = max(
             1,
             sum(entry.is_dir() for entry in os.scandir(cfg.data.train_path)),
