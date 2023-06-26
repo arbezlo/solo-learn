@@ -58,7 +58,7 @@ class H5Dataset(Dataset):
         self.h5_file = None
         self.transform = transform
 
-        assert dataset in ["imagenet100", "imagenet"]
+        assert dataset in ["imagenet100", "imagenet", "custom"] #comportement for custom dataset considered as the same as for imagenet
 
         self._load_h5_data_info()
 
