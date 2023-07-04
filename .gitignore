@@ -172,3 +172,13 @@ dmypy.json
 *.sw?
 
 # End of https://www.gitignore.io/api/python,visualstudiocode
+../PAWS_custom_dataloaders/.gitignore
+.ipynb_checkpoints
+__pycache__
+datasets
+.*.swp
+*.pdf
+*.ipynb
+configs/*
+env/docker
+env-list

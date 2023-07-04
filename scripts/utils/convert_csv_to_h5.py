@@ -61,7 +61,7 @@ def convert_csv_to_h5(csv_path: str, idx_to_class_path: str, folder_path: str, h
             
             cur_folder = df.loc[df["target"]==class_name]
             cur_folder_bis_ = cur_folder.copy()['img_path'].str.replace(' ','_') 
-            class_group = h5.create_group(str(classes_name[class_name]).replace(' ','_'))
+            class_group = h5.create_group(str(classes_name[int(class_name)]).replace(' ','_'))
             
             for i, row in cur_folder.iterrows():
                 
@@ -69,14 +69,17 @@ def convert_csv_to_h5(csv_path: str, idx_to_class_path: str, folder_path: str, h
                 data = np.frombuffer(byte_im, dtype="uint8")
                 
                 aaa = cur_folder_bis_.loc[cur_folder_bis_.index == i].values.tolist()[0]
-                
-                class_group.create_dataset(
-                    aaa,
-                    data=data,
-                    shape=data.shape,
-                    compression="gzip",
-                    compression_opts=9,
-                )
+                aaa = aaa.replace("/","\\")
+                try: 
+                    class_group.create_dataset(
+                        aaa,
+                        data=data,
+                        shape=data.shape,
+                        compression="gzip",
+                        compression_opts=9,
+                    )
+                except Exception as e:
+                    print(f"Error {e} on image path {aaa}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
